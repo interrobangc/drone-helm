@@ -31,6 +31,9 @@ type (
 		Chart              string   `json:"chart"`
 		Version            string   `json:"version"`
 		EKSCluster         string   `json:"eks_cluster"`
+		AWSAccessKeyId     string   `json:"aws_access_key_id"`
+		AWSSecretAccessKey string   `json:"aws_secret_access_key"`
+		AWSDefaultRegion   string   `json:"aws_default_region"`
 		Values             string   `json:"values"`
 		StringValues       string   `json:"string_values"`
 		ValuesFiles        string   `json:"values_files"`

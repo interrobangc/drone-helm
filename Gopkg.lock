@@ -10,12 +10,12 @@
   version = "v1.1.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:eb14b5c14ba605297b3abcfac1a42779c62c8538dd995fb820b4a032fe03dec6"
+  branch = "eks_auth"
+  digest = "1:34b3a7cc2a830238744bca0a537c12ec363bb1ade12f94435c6df7cf80b460c4"
   name = "github.com/interrobangc/drone-helm"
   packages = ["plugin"]
   pruneopts = "UT"
-  revision = "915077d25e39e4e0973f088990deec5dd7a86005"
+  revision = "9f5c170c69e9e4d030080eb55f68737492ef51d4"
 
 [[projects]]
   digest = "1:ecd9aa82687cf31d1585d4ac61d0ba180e42e8a6182b85bd785fcca8dfeefc1b"
