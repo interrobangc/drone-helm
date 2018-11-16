@@ -30,6 +30,7 @@ type (
 		Release            string   `json:"release"`
 		Chart              string   `json:"chart"`
 		Version            string   `json:"version"`
+		EKSCluster         string   `json:"eks-cluster"`
 		Values             string   `json:"values"`
 		StringValues       string   `json:"string_values"`
 		ValuesFiles        string   `json:"values_files"`
