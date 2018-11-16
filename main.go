@@ -59,6 +59,11 @@ func main() {
 			EnvVar: "PLUGIN_CHART_VERSION,CHART_VERSION",
 		},
 		cli.StringFlag{
+			Name:   "eks-cluster",
+			Usage:  "Kubernetes namespace",
+			EnvVar: "PLUGIN_EKS_CLUSTER,EKS_CLUSTER",
+		},
+		cli.StringFlag{
 			Name:   "values",
 			Usage:  "Kubernetes helm release",
 			EnvVar: "PLUGIN_VALUES,VALUES",
@@ -175,6 +180,7 @@ func run(c *cli.Context) error {
 			HelmRepos:          c.StringSlice("helm_repos"),
 			Chart:              c.String("chart"),
 			Version:            c.String("chart-version"),
+			EKSCluster:         c.String("eks-cluster"),
 			Debug:              c.Bool("debug"),
 			DryRun:             c.Bool("dry-run"),
 			Secrets:            c.StringSlice("secrets"),

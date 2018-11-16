@@ -234,8 +234,20 @@ func (p *Plugin) Exec() error {
 		if p.Config.APIServer == "" {
 			return fmt.Errorf("Error: API Server is needed to deploy.")
 		}
-		if p.Config.Token == "" {
-			return fmt.Errorf("Error: Token is needed to deploy.")
+		if p.Config.EKSCluster == "" {
+			if p.Config.Token == "" {
+				return fmt.Errorf("Error: Token is needed to deploy.")
+			}
+		} else {
+			if p.Config.AWSAccessKeyId == "" {
+				return fmt.Errorf("Error: AWS Access Key ID is needed to deploy to EKS Cluster.")
+			}
+			if p.Config.AWSSecretAccessKey == "" {
+				return fmt.Errorf("Error: AWS Secret Access Key is needed to deploy to EKS Cluster.")
+			}
+			if p.Config.AWSDefaultRegion == "" {
+				return fmt.Errorf("Error: AWS Default Region is needed to deploy to EKS Cluster.")
+			}
 		}
 		initialiseKubeconfig(&p.Config, KUBECONFIG, p.Config.KubeConfig)
 	}
@@ -322,6 +334,15 @@ func resolveSecrets(p *Plugin) {
 	}
 	if p.Config.Certificate == "" {
 		p.Config.Certificate = resolveEnvVar("${KUBERNETES_CERTIFICATE}", p.Config.Prefix, p.Config.Debug)
+	}
+	if p.Config.AWSAccessKeyId == "" {
+		p.Config.AWSAccessKeyId = resolveEnvVar("${AWS_ACCESS_KEY_ID}", p.Config.Prefix, p.Config.Debug)
+	}
+	if p.Config.AWSSecretAccessKey == "" {
+		p.Config.AWSSecretAccessKey = resolveEnvVar("${AWS_SECRET_ACCESS_KEY}", p.Config.Prefix, p.Config.Debug)
+	}
+	if p.Config.AWSDefaultRegion == "" {
+		p.Config.AWSDefaultRegion = resolveEnvVar("${AWS_DEFAULT_REGION}", p.Config.Prefix, p.Config.Debug)
 	}
 	if p.Config.ServiceAccount == "" {
 		p.Config.ServiceAccount = resolveEnvVar("${SERVICE_ACCOUNT}", p.Config.Prefix, p.Config.Debug)
