@@ -31,6 +31,7 @@ type (
 		Chart              string   `json:"chart"`
 		Version            string   `json:"version"`
 		EKSCluster         string   `json:"eks_cluster"`
+		EKSRoleARN         string   `json:"eks_role_arn"`
 		Values             string   `json:"values"`
 		StringValues       string   `json:"string_values"`
 		ValuesFiles        string   `json:"values_files"`

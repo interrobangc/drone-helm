@@ -60,8 +60,13 @@ func main() {
 		},
 		cli.StringFlag{
 			Name:   "eks_cluster",
-			Usage:  "Name of EKS cluster. Requires AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_DEFAULT_REGION secrets",
+			Usage:  "Name of EKS cluster. Requires AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_DEFAULT_REGION secrets AND/OR EKS_ROLE and proper role configuration",
 			EnvVar: "PLUGIN_EKS_CLUSTER,EKS_CLUSTER",
+		},
+		cli.StringFlag{
+			Name:   "eks_role_arn",
+			Usage:  "ARN of EKS role to assume for EKS authentication.",
+			EnvVar: "PLUGIN_EKS_ROLE_ARN,EKS_ROLE_ARN",
 		},
 		cli.StringFlag{
 			Name:   "values",
@@ -181,6 +186,7 @@ func run(c *cli.Context) error {
 			Chart:              c.String("chart"),
 			Version:            c.String("chart-version"),
 			EKSCluster:         c.String("eks_cluster"),
+			EKSRoleARN:         c.String("eks_role_arn"),
 			Debug:              c.Bool("debug"),
 			DryRun:             c.Bool("dry-run"),
 			Secrets:            c.StringSlice("secrets"),
