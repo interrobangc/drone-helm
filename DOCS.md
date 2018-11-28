@@ -191,7 +191,8 @@ KUBERNETES_TOKEN=$(kubectl get secret $(kubectl get sa default -o jsonpath='{.se
 
 To deploy to EKS, you should have `api_server` and `kubernetes_certificate` secrets set in drone. If drone is deploying from outside of AWS, you should also have an `aws_access_key_id`, `aws_secret_access_key` secret. An `AWS_DEFAULT_REGION` environmental variable should also be set for the deployment.
 
-Example using keys:
+### Use the AWS IAM keys for the user who created the EKS cluster (not recommended):
+
 ```YAML
 pipeline
   helm_deploy:
@@ -208,7 +209,10 @@ pipeline
     secrets: [ aws_access_key_id, aws_secret_access_key, api_server, kubernetes_certificate ]
 ```
 
-Example using role:
+### Use role based EKS access
+You must first [configure an IAM Role for cluster access](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html) and configure policy to allow an iam user or iam role to assume the new role.
+
+Running drone agent on an ec2 instance that has Role based access to assume the cluster access Role created above:
 ```YAML
 pipeline
   helm_deploy:
@@ -219,11 +223,29 @@ pipeline
     prefix: STAGING
     namespace: staging
     eks_cluster: my-eks-cluster
-    eks_role_arn: arn:aws:iam::ACCOUNT ID HERE:role/eks-master
+    eks_role_arn: arn:aws:iam::[ACCOUNT ID HERE]:role/eks-master
     environment:
       - AWS_DEFAULT_REGION=us-east-1
 
     secrets: [ api_server, kubernetes_certificate ]
+```
+
+Using IAM keys with access to assume the cluster access Role created above:
+```YAML
+pipeline
+  helm_deploy:
+    image: quay.io/ipedrazas/drone-helm
+    chart: ./charts/my-chart
+    release: ${DRONE_BRANCH}
+    values: image.tag=${DRONE_BRANCH}-${DRONE_COMMIT_SHA:0:7}
+    prefix: STAGING
+    namespace: staging
+    eks_cluster: my-eks-cluster
+    eks_role_arn: arn:aws:iam::[ACCOUNT ID HERE]:role/eks-master
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+
+    secrets: [ aws_access_key_id, aws_secret_access_key, api_server, kubernetes_certificate ]
 ```
 
 ## Advanced customisations and debugging
